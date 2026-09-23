@@ -1,0 +1,30 @@
+{
+    "geode": "3.0.0",
+    "gd": {
+        "win": "2.2074",
+        "android": "2.2074"
+    },
+    "version": "v1.0.0",
+    "id": "yourname.fake_heart_rate",
+    "name": "Fake Heart Rate",
+    "developer": "YourName",
+    "description": "Показує фейковий пульс, який зростає до кінця рівня!",
+    "settings": {
+        "min-bpm": {
+            "name": "Мінімальний BPM",
+            "description": "Пульс на початку рівня",
+            "type": "int",
+            "default": 100,
+            "min": 50,
+            "max": 180
+        },
+        "max-bpm": {
+            "name": "Максимальний BPM",
+            "description": "Пульс наприкінці рівня (100%)",
+            "type": "int",
+            "default": 175,
+            "min": 100,
+            "max": 250
+        }
+    }
+}
