@@ -1,0 +1,42 @@
+#include <Geode/Geode.hpp>
+#include <Geode/modify/PlayLayer.hpp>
+#include <cstdlib>
+
+using namespace geode::prelude;
+
+class $modify(FakePulseLayer, PlayLayer) {
+    CCLabelBMFont* m_pulseLabel = nullptr;
+
+    bool init(GJGameLevel* level, bool useReplay, bool dontCreateObjects) {
+        if (!PlayLayer::init(level, useReplay, dontCreateObjects)) return false;
+
+        m_fields->m_pulseLabel = CCLabelBMFont::create("BPM: 100", "bigFont.fnt");
+        m_fields->m_pulseLabel->setPosition({ 50, 40 });
+        m_fields->m_pulseLabel->setScale(0.5f);
+        m_fields->m_pulseLabel->setOpacity(200);
+        this->addChild(m_fields->m_pulseLabel, 100);
+
+        this->schedule(schedule_selector(FakePulseLayer::updatePulse), 0.4f);
+
+        return true;
+    }
+
+    void updatePulse(float dt) {
+        if (!m_fields->m_pulseLabel) return;
+
+        int minBpm = Mod::get()->getSettingValue<int64_t>("min-bpm");
+        int maxBpm = Mod::get()->getSettingValue<int64_t>("max-bpm");
+
+        float percent = this->getCurrentPercent();
+
+        int baseBpm = minBpm + static_cast<int>((percent / 100.0f) * (maxBpm - minBpm));
+
+        int randomOffset = (std::rand() % 7) - 3;
+        int finalBpm = baseBpm + randomOffset;
+
+        if (finalBpm < minBpm - 5) finalBpm = minBpm;
+
+        std::string text = "BPM: " + std::to_string(finalBpm);
+        m_fields->m_pulseLabel->setString(text.c_str());
+    }
+};
